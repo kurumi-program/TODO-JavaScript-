@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODOアプリ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=swap_vert"
+    />
+    <link rel="stylesheet" href="./css/todo.css" />
+    <script src="./js/todo.js"></script>
+  </head>
+  <body>
+    <header class="todo-color">
+      <h1>TODOアプリ</h1>
+    </header>
+    <main>
+      <section class="add-todo inner">
+        <div class="add-todo__button todo-color" id="add-todo-button">
+          <i class="fa-solid fa-plus"></i>
+          <h2>タスクを追加</h2>
+        </div>
+        <div class="add-todo__modal" id="new-todo-modal">
+          <div class="add-todo__modal-container" id="new-todo-container">
+            <i
+              class="add-todo__modal-icon fa-solid fa-xmark"
+              id="modal-close"
+            ></i>
+            <h2>新規作成</h2>
+            <p class="error-message" id="error-message"></p>
+            <div>
+              <label for="new-todo-title">タイトル</label>
+              <input type="text" id="new-todo-title" />
+            </div>
+            <div>
+              <label for="new-todo-content">内容（空欄可）</label>
+              <textarea id="new-todo-content"></textarea>
+            </div>
+            <div>
+              <label for="new-todo-person">担当者</label>
+              <input type="text" id="new-todo-person" />
+            </div>
+            <div>
+              <label for="new-todo-date">期限</label>
+              <input
+                class="new-todo__modal-date"
+                type="date"
+                id="new-todo-date"
+              />
+            </div>
+            <div class="add-todo__modal-submit">
+              <button class="add-todo__modal-button" id="submit-new-todo">
+                追加
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="select-todo-status inner">
+        <div class="select-todo-status__list" id="tab-status-menu">
+          <p class="_todo-active">TODO</p>
+          <p>進行中</p>
+          <p>完了</p>
+        </div>
+      </section>
+      <section class="todo-list inner">
+        <div class="todo-list__parts-row">
+          <div class="todo-list__search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-todo" placeholder="タスクを検索" />
+          </div>
+          <div class="todo-list__sort" id="todo-sort-icon">
+            <div class="todo-list__sort-box">
+              <div class="todo-list__sort-icon" id="sort-add-todo">
+                <span class="material-symbols-outlined">swap_vert</span>
+                <p>並び替え</p>
+              </div>
+              <ul class="todo-list__sort-pd">
+                <li class="sort-deadline">期限が早い順</li>
+                <li class="sort-deadline">期限が遅い順</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="todo-contents">
+          <ul class="todo-list__list" id="todo-list">
+            <!-- todoが追加される -->
+          </ul>
+          <ul class="todo-list__list" id="todo-doing">
+            <!-- todoが追加される -->
+          </ul>
+          <ul class="todo-list__list" id="todo-done">
+            <!-- todoが追加される -->
+          </ul>
+        </div>
+        <div class="edit-todo__modal" id="edit-todo-modal">
+          <div class="add-todo__modal-container">
+            <i
+              class="add-todo__modal-icon fa-solid fa-xmark"
+              id="edit-todo-close"
+            ></i>
+            <h2>タスクを編集</h2>
+            <p class="error-message" id="edit-error-message"></p>
+            <div>
+              <label for="edit-todo-title">タイトル</label>
+              <input type="text" id="edit-todo-title" />
+            </div>
+            <div>
+              <label for="edit-todo-content">内容</label>
+              <textarea id="edit-todo-content"></textarea>
+            </div>
+            <div>
+              <label for="edit-todo-person">担当者</label>
+              <input type="text" id="edit-todo-person" />
+            </div>
+            <div>
+              <label for="edit-todo-date">期限</label>
+              <input
+                class="edit-todo__modal-date"
+                type="date"
+                id="edit-todo-date"
+              />
+            </div>
+            <div>
+              <label for="edit-todo-status">ステータス</label>
+              <select class="edit-todo__status" id="edit-todo-status">
+                <option value="0">TODO</option>
+                <option value="1">進行中</option>
+                <option value="2">完了</option>
+              </select>
+            </div>
+            <div class="add-todo__modal-submit">
+              <button class="add-todo__modal-button" id="submit-edit">
+                編集する
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

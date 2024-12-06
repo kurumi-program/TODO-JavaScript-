@@ -1,0 +1,466 @@
+@charset "utf-8";
+
+$layout-width-inner: 1200px;
+
+$breakpoints: (
+  //キー : 値
+  "sp": "(max-width: 767px)",
+  "tab": "(min-width: 768px) and (max-width: #{$layout-width-inner - 1px})",
+  "pc": "(min-width: #{$layout-width-inner})"
+) !default;
+
+//メディアクエリ用のmixinを定義。デフォ値はsp
+@mixin mq($breakpoint: sp) {
+  //map-get(マップ型変数, キー)で値を取得
+  @media #{map-get($breakpoints, $breakpoint)} {
+    //この中をカスタムできる
+    @content;
+  }
+}
+
+/* --------------------------------------------
+  reset
+---------------------------------------------*/
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #f6f6f6;
+  color: #1a1a1a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+div,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --------------------------------------------
+  common
+---------------------------------------------*/
+$border-color: #e4e0e0;
+$primary-color: #21b2d3;
+$font-second-color: gray;
+$font-color-red: rgb(213 94 94);
+$font-color-blue: rgb(20 72 117 / 70%);
+$hover-color: #f2fbff;
+
+.inner {
+  max-width: 650px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.todo-color {
+  background: #fff;
+}
+
+._todo-active {
+  color: $primary-color;
+  border-bottom: 3px solid $primary-color;
+}
+
+main {
+  padding-bottom: 20px;
+}
+/* --------------------------------------------
+  header
+---------------------------------------------*/
+header {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid $border-color;
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    @include mq("sp") {
+      font-size: 20px;
+    }
+  }
+}
+
+/* ---------------------å-----------------------
+  add-todo
+---------------------------------------------*/
+.add-todo {
+  padding-top: 20px;
+  &__button {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    // box-shadow: 0px 0px 6px 2px #ccc;
+    // border: 1px solid $border-color;
+    padding: 10px;
+    border-radius: 10px;
+    color: $primary-color;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  h2 {
+    font-size: 20px;
+    margin-left: 10px;
+    @include mq("sp") {
+      font-size: 16px;
+    }
+  }
+
+  &__modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+
+    &-container {
+      box-sizing: border-box;
+      div {
+        margin-top: 10px;
+      }
+      h2 {
+        margin-left: 0;
+      }
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #f6f6f6;
+      padding: 50px;
+      border-radius: 10px;
+      max-width: 630px;
+      width: 90%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      @include mq("sp") {
+        padding: 20px;
+      }
+
+      label,
+      input {
+        display: block;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid $border-color;
+        background: #fff;
+        box-sizing: border-box;
+        border-radius: 6px;
+      }
+
+      textarea {
+        min-height: 150px;
+        resize: horizontal;
+      }
+
+      input[type="date"] {
+        border: 1px solid $border-color;
+        padding: 5px 10px;
+        border-radius: 6px;
+      }
+    }
+    &-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: $font-second-color;
+      cursor: pointer;
+    }
+
+    &-submit {
+      text-align: center;
+    }
+
+    &-button {
+      cursor: pointer;
+      width: 400px;
+      max-width: 100%;
+      padding: 10px;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      background: $primary-color;
+      border-radius: 6px;
+      margin-top: 20px;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+.error-message {
+  font-size: 14px;
+  color: $font-color-red;
+  margin-top: 10px;
+  @include mq("sp") {
+    font-size: 12px;
+  }
+}
+
+/* --------------------------------------------
+  select-todo-status
+---------------------------------------------*/
+.select-todo-status {
+  &__list {
+    display: flex;
+    border-bottom: 2px solid $border-color;
+    p {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+      @include mq("sp") {
+        font-size: 16px;
+      }
+      &:not(:first-child) {
+        margin-left: 35px;
+      }
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+/* --------------------------------------------
+  todo-list
+---------------------------------------------*/
+.todo-list {
+  &__parts-row {
+    display: flex;
+    height: auto;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: space-between;
+    @include mq("sp") {
+      display: block;
+    }
+  }
+
+  &__sort {
+    @include mq("sp") {
+      margin-top: 10px;
+    }
+  }
+
+  &__sort-box {
+    position: relative;
+    display: inline-block;
+    @include mq("sp") {
+      display: block;
+    }
+  }
+
+  &__sort-icon {
+    display: flex;
+    height: auto;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+    span {
+      color: $font-second-color;
+      font-size: 15px;
+    }
+    p {
+      color: $font-second-color;
+      font-size: 12px;
+      margin-left: 2px;
+    }
+  }
+
+  &__sort-box:hover .todo-list__sort-pd {
+    display: block; // 親要素にホバーした時にプルダウンを表示
+  }
+  &__sort-pd {
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    background: #fff;
+    right: 0;
+    padding: 5px 0;
+    border-radius: 5px 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    @include mq("sp") {
+      left: 0;
+      border-radius: 0 5px 5px 5px;
+      width: 92px;
+    }
+    li {
+      font-size: 12px;
+      color: $font-second-color;
+      white-space: nowrap;
+      cursor: pointer;
+      padding-right: 10px;
+      padding-left: 10px;
+      position: relative;
+      &:not(:first-child) {
+        margin-top: 3px;
+      }
+      &:hover {
+        background: $hover-color;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &__search {
+    position: relative;
+    input {
+      width: 300px;
+      max-width: 100%;
+      padding: 10px 50px;
+      border-radius: 50px;
+      border: none;
+      box-sizing: border-box;
+      @include mq("sp") {
+        width: 100%;
+      }
+    }
+    i {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 20px;
+      color: $font-second-color;
+    }
+  }
+
+  &__title {
+    display: flex;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__icon {
+    position: relative;
+  }
+
+  &__list {
+    &:not(:first-child) {
+      display: none;
+    }
+    li {
+      margin-top: 20px;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    h2 {
+      font-size: 19px;
+      @include mq("sp") {
+        font-size: 17px;
+      }
+    }
+
+    &-text {
+      color: $font-second-color;
+      font-size: 16px;
+      margin-top: 10px;
+      @include mq("sp") {
+        font-size: 14px;
+      }
+    }
+
+    &-detail {
+      margin-top: 20px;
+      p {
+        font-size: 14px;
+        margin-top: 3px;
+        @include mq("sp") {
+          font-size: 12px;
+        }
+      }
+    }
+    &-person {
+      color: $font-color-blue;
+      font-weight: bold;
+    }
+    &-deadline {
+      color: $font-color-red;
+      font-weight: bold;
+    }
+  }
+
+  &__icon {
+    i {
+      font-size: 30px;
+      color: $font-second-color;
+    }
+    cursor: pointer;
+    &:hover .todo-list__dropdown {
+      display: block;
+    }
+  }
+  &__dropdown {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 200px;
+    background: #f6f6f6;
+    color: $primary-color;
+    display: none;
+    border-radius: 3px;
+    padding: 7px 0;
+    p {
+      padding: 0 10px;
+      &:hover {
+        background: #f2fbff;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+//modal
+.edit-todo__modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.edit-todo__status {
+  padding: 5px 10px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+}
